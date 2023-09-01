@@ -1,0 +1,1841 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 effective-4.2 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target x86_64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -module-name CYBAVOWallet
+import Alamofire
+import AlamofireObjectMapper
+import AudioToolbox
+@_exported import CYBAVOWallet
+import CryptoSwift
+import Foundation
+import LocalAuthentication
+import ObjectMapper
+import Security
+import Swift
+import SwiftOTP
+import SwiftyUserDefaults
+import UIKit
+import Web3
+import _Concurrency
+public enum WalletType : Swift.Int {
+  case REGULAR
+  case MAPPED_WALLET
+  case RELAYER_WALLET
+  public var name: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum OtpType : Swift.Int {
+  case SMS_SETUP_PHONE_OTP
+  case SMS_VERIFY_OTP
+  case SMS_LOGIN_OTP
+  case EMAIL_VERIFY_OTP
+  public var name: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension CYBAVOWallet.OtpType : Swift.CaseIterable {
+  public typealias AllCases = [CYBAVOWallet.OtpType]
+  public static var allCases: [CYBAVOWallet.OtpType] {
+    get
+  }
+}
+extension CYBAVOWallet.WalletType : Swift.CaseIterable {
+  public typealias AllCases = [CYBAVOWallet.WalletType]
+  public static var allCases: [CYBAVOWallet.WalletType] {
+    get
+  }
+}
+public enum EosResourceTransactionType : Swift.Int {
+  case BUY_RAM
+  case SELL_RAM
+  case DELEGATE_CPU
+  case UNDELEGATE_CPU
+  case DELEGATE_NET
+  case UNDELEGATE_NET
+  public var name: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension CYBAVOWallet.EosResourceTransactionType : Swift.CaseIterable {
+  public typealias AllCases = [CYBAVOWallet.EosResourceTransactionType]
+  public static var allCases: [CYBAVOWallet.EosResourceTransactionType] {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class AddContractCurrenciesResult {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class CurrencyFailResult {
+  public var currency: Swift.Int64
+  public var contractAddress: Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class WalletIdStatus {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class TokenUriInfo {
+  public var tokenUri: Swift.String
+  public var name: Swift.String
+  public var image: Swift.String
+  public var description: Swift.String
+  public var errorMessage: Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AddressTags {
+  public var blackList: Swift.Bool
+  public var whiteList: Swift.Bool
+  public var tags: [Swift.String]
+  public var providers: [Swift.String : Swift.Array<Swift.String>]
+  public var provider: Swift.String
+  public var score: Swift.Double
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class GetMultipleTokenUriReponse {
+  public var tokenUriMap: [Swift.String : CYBAVOWallet.TokenUriInfo]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class GetAddressesTagsReponse {
+  public var addressTagMap: [Swift.String : CYBAVOWallet.AddressTags]
+  @objc deinit
+}
+public struct ChainInfo : ObjectMapper.Mappable {
+  public init?(map: ObjectMapper.Map)
+  public mutating func mapping(map: ObjectMapper.Map)
+}
+@_hasMissingDesignatedInitializers public class Wallets {
+  public static let shared: CYBAVOWallet.Wallets
+  public func queryCoinType(address: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.QueryCoinTypeResult>)
+  public func getCurrencies(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetCurrenciesResult>)
+  public func getEosResourceState(accountName: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetEosResourcesStateResult>)
+  public func getEosRamPrice(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetEosRamPriceResult>)
+  public func getCurrencyPrices(wallets: [[Swift.String : Any]] = [[:]], exchangeCurrencies: [Swift.String], approximateRates: [Swift.String : [Swift.String : Swift.Double]] = [:], completion: @escaping CYBAVOWallet.Callback<[Swift.String : Swift.Double]>)
+  public func getCurrencyPrices(currencies: [CYBAVOWallet.Currency], exchangeCurrencys: [Swift.String], approximateRates: [Swift.String : [Swift.String : Swift.Double]] = [:], completion: @escaping CYBAVOWallet.Callback<[Swift.String : Swift.Double]>)
+  public func getCurrencyPrices(wallets: [CYBAVOWallet.Wallet], exchangeCurrencys: [Swift.String], approximateRates: [Swift.String : [Swift.String : Swift.Double]] = [:], completion: @escaping CYBAVOWallet.Callback<[Swift.String : Swift.Double]>)
+  public func getWallets(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletsResult>)
+  public func getWallet(walletId: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletResult>)
+  public func getWalletsByChainIds(chainIds: [Swift.Int64], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletsResult>)
+  public func getWalletsByCaip2ChainIds(caip2ChainIds: [Swift.String], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletsResult>)
+  @available(*, deprecated, message: "Use getWallet() instead")
+  public func getWalletLegacy(walletId: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletResult>)
+  public func createWallet(currency: Swift.Int, tokenAddress: Swift.String, parentWalletId: Swift.Int64, name: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Swift.String] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateWalletResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func createWallet(currency: Swift.Int, tokenAddress: Swift.String, parentWalletId: Swift.Int64, name: Swift.String, pinCode: Swift.String, extras: [Swift.String : Swift.String] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateWalletResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func addContractCurrency(currency: Swift.Int64, contractAddress: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.AddContractCurrenciesResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func addContractCurrencies(currency: [Swift.Int64], contractAddress: [Swift.String], pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.AddContractCurrenciesResult>)
+  public func addContractCurrency(currency: Swift.Int64, contractAddress: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.AddContractCurrenciesResult>)
+  public func addContractCurrencies(currency: [Swift.Int64], contractAddress: [Swift.String], pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.AddContractCurrenciesResult>)
+  public func registerTokenIds(walletId: Swift.Int64, tokenIds: [Swift.String], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RegisterTokenIdsResult>)
+  public func renameWallet(walletId: Swift.Int64, name: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RenameWalletResult>)
+  public func getWalletUsage(walletId: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletUsageResult>)
+  public func createTransactionSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func createTransactionBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func createTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func createTransaction(fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinCode pinSecret: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func createTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func createTransactionSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func createTransactionSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func createTransactionBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func createTransactionBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func createTransactionWithPinCodeInternal(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", fromWalletId: Swift.Int64, toAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, description: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func increaseTransactionFee(fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  public func increaseTransactionFee(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  public func increaseTransactionFeeSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func increaseTransactionFeeSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  public func increaseTransactionFeeBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func increaseTransactionFeeBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func cancelTransaction(fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  public func cancelTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  public func cancelTransactionSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func cancelTransactionSms(actionToken: Swift.String, smsCode: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  public func cancelTransactionBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func cancelTransactionBio(promptMessage: Swift.String, fromWalletId: Swift.Int64, txid: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ReplaceTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func requestSecureToken(pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RequestSecureTokenResult>)
+  public func requestSecureToken(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RequestSecureTokenResult>)
+  public func requestSecureTokenSms(actionToken: Swift.String, smsCode: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RequestSecureTokenResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func requestSecureTokenSms(actionToken: Swift.String, smsCode: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RequestSecureTokenResult>)
+  public func requestSecureTokenBio(promptMessage: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RequestSecureTokenResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func requestSecureTokenBio(promptMessage: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RequestSecureTokenResult>)
+  public func clearSecureToken(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ClearSecureTokenResult>)
+  public func getTransactionFee(currency: Swift.Int, tokenAddress: Swift.String = "", completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetTransactionFeeResult>)
+  public func getCurrencyTraits(currency: Swift.Int, tokenAddress: Swift.String, tokenVersion: Swift.Int, walletAddress: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetCurrencyTraitsResult>)
+  public func getEstimateGas(walletId: Swift.Int64, content: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetEstimateGasResult>)
+  public func getSameCurrencyWalletLimit(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetSameCurrencyWalletLimitResult>)
+  public func getAddressesTags(currency: Swift.Int, addresses: [Swift.String], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetAddressesTagsReponse>)
+  public func getMultipleTokenUri(currency: Swift.Int, tokenAddresses: [Swift.String], tokenIds: [Swift.String], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetMultipleTokenUriReponse>)
+  public func getBalances(addresses: [Swift.Int64 : CYBAVOWallet.BalanceAddress], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetBalanceResult>)
+  @available(*, deprecated, message: "Use getBalances() instead")
+  public func getBalancesLegacy(addresses: [Swift.Int64 : CYBAVOWallet.BalanceAddress], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetBalanceResult>)
+  public func getMarketInfos(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetMarketInfosResult>)
+  public func getActionToken(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetActionTokenResult>)
+  public func getTransactionSmsCode(duration: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetActionTokenResult>)
+  public func getLoginSmsCode(duration: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetActionTokenResult>)
+  public func getSmsCode(otpType: Swift.Int, duration: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetActionTokenResult>)
+  public func getSignMessageActionToken(message: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetActionTokenResult>)
+  public func getSignedActionToken(promptMessage: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetSignedActionTokenResult>)
+  public func getBiometricsType() -> CYBAVOWallet.BiometryType
+  public func isBioKeyExist() -> Swift.Bool
+  public func updateDeviceInfo(type: Swift.Int?, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.UpdateDeviceInfoResult>)
+  public func registerPubkey(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RegisterPubkeyResult>)
+  public func getHistory(currency: Swift.Int, tokenAddress: Swift.String, walletAddress: Swift.String, start: Swift.Int, count: Swift.Int, crosschain: Swift.Int = 1, filters: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetHistoryResult>)
+  public func getUserHistory(start: Swift.Int, count: Swift.Int, filters: [Swift.String : Any], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetHistoryResult>)
+  public func getTenderTransactions(inMethod: Swift.String, start: Swift.Int, count: Swift.Int, filters: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetTenderTransactionsResult>)
+  public func callAbiFunctionTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func callAbiFunctionTransaction(walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func callAbiFunctionTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func callAbiFunctionTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func callAbiFunctionTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func callAbiFunctionTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func callAbiFunctionRead(walletId: Swift.Int64, name: Swift.String, contractAddress: Swift.String, abiJson: Swift.String, args: [Any], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func callAbiFunction(walletId: Swift.Int64, name: Swift.String, inputs: [Swift.String : Any], pinCode: Swift.String? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func callAbiFunction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, name: Swift.String, inputs: [Swift.String : Any], pinSecret: CYBAVOWallet.PinSecret? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func callAbiFunctionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, name: Swift.String, inputs: [Swift.String : Any], pinSecret: CYBAVOWallet.PinSecret? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func callAbiFunctionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, name: Swift.String, inputs: [Swift.String : Any], pinCode: Swift.String? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func callAbiFunctionBio(promptMessage: Swift.String, walletId: Swift.Int64, name: Swift.String, inputs: [Swift.String : Any], pinSecret: CYBAVOWallet.PinSecret? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func callAbiFunctionBio(promptMessage: Swift.String, walletId: Swift.Int64, name: Swift.String, inputs: [Swift.String : Any], pinCode: Swift.String? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CallAbiFunctionResult>)
+  public func getTransactionInfo(currency: Swift.Int, txid: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetTransactionInfoResult>)
+  public func getTransactionsInfo(currency: Swift.Int64, txids: [Swift.String], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetTransactionsInfoResult>)
+  public func getEosAccountValid(accountName: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetEosAccountValidResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func signRawTx(walletId: Swift.Int64, rawTx: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func signRawTx(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, rawTx: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func signRawTxSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func signRawTxSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func signRawTxBio(promptMessage: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func signRawTxBio(promptMessage: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func sendSignedTx(walletId: Swift.Int64, signedTx: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SendSignedTxResult>)
+  public func estimateTransaction(currency: Swift.Int, tokenAddress: Swift.String, amount: Swift.String, transactionFee: Swift.String, walletId: Swift.Int64? = nil, toAddress: Swift.String? = nil, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.EstimateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func signMessage(walletId: Swift.Int64, message: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func signMessage(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, message: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func signMessageSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, message: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func signMessageSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, message: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func signMessageBio(promptMessage: Swift.String, walletId: Swift.Int64, message: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func signMessageBio(promptMessage: Swift.String, walletId: Swift.Int64, message: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func walletConnectGetSupportedChain(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.WalletConnectGetSupportedChainResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignTypedData(walletId: Swift.Int64, typedData: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func walletConnectSignTypedData(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, typedData: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func walletConnectSignTypedDataSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, typedData: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignTypedDataSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, typedData: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func walletConnectSignTypedDataBio(promptMessage: Swift.String, walletId: Swift.Int64, typedData: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignTypedDataBio(promptMessage: Swift.String, walletId: Swift.Int64, typedData: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignTransaction(walletId: Swift.Int64, signParams: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func walletConnectSignTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, signParams: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func walletConnectSignTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, signParams: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, signParams: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func walletConnectSignTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, signParams: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, signParams: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignMessage(walletId: Swift.Int64, message: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func walletConnectSignMessage(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, message: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func walletConnectSignMessageSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, message: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignMessageSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, message: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func walletConnectSignMessageBio(promptMessage: Swift.String, walletId: Swift.Int64, message: Swift.String, pinSecret: CYBAVOWallet.PinSecret, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func walletConnectSignMessageBio(promptMessage: Swift.String, walletId: Swift.Int64, message: Swift.String, pinCode: Swift.String, extras: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedMessageResult>)
+  public func walletConnectSendSignedTransaction(walletId: Swift.Int64, signedTx: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SendSignedTxResult>)
+  public func getTenderTransactionUuid(walletId: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.AddTenderTransactionResult>)
+  public func addTenderTransaction(uuid: Swift.String, walletId: Swift.Int64, rawJson: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.AddTenderTransactionResult>)
+  public func getWalletConnectSignedTx(walletId: Swift.Int64, accessId: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletConnectSignedTxResult>)
+  public func getWalletConnectUnsignedData(walletId: Swift.Int64, accessId: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetWalletConnectUnsignedDataResult>)
+  public func getWalletConnectApiHistory(walletId: Swift.Int64, start: Swift.Int, count: Swift.Int, filters: [Swift.String : Any] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetApiHistoryResult>)
+  public func walletConnectSync(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.WalletConnectSyncResult>)
+  public func getNonce(walletId: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetNonceResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func cancelWalletConnectTransaction(walletId: Swift.Int64, accessId: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func cancelWalletConnectTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, accessId: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func cancelWalletConnectTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, accessId: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func cancelWalletConnectTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, accessId: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func cancelWalletConnectTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, accessId: Swift.String, transactionFee: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func cancelWalletConnectTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, accessId: Swift.String, transactionFee: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateTransactionResult>)
+  public func getFinancialProducts(kinds: [Swift.Int] = [FinancialProductListKind.All.rawValue], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetFinancialProductsResult>)
+  public func getFinancialHistory(kind: Swift.Int, page: Swift.String?, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetFinancialHistoryResult>)
+  public func getFinancialHistory(productUuid: Swift.String, page: Swift.String?, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetFinancialHistoryResult>)
+  public func getFinancialOrder(productUuid: Swift.String, orderId: Swift.String?, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetFinancialOrderResult>)
+  public func getFinancialBonusList(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetFinancialBonusResult>)
+  @objc deinit
+}
+extension CYBAVOWallet.Wallets {
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func setSolTokenAccountTransaction(walletId: Swift.Int64, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetSolTokenAccountTransactionResult>)
+  public func setSolTokenAccountTransaction(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetSolTokenAccountTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func setSolTokenAccountTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetSolTokenAccountTransactionResult>)
+  public func setSolTokenAccountTransactionSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetSolTokenAccountTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func setSolTokenAccountTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetSolTokenAccountTransactionResult>)
+  public func setSolTokenAccountTransactionBio(promptMessage: Swift.String, walletId: Swift.Int64, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetSolTokenAccountTransactionResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func commonSignRawTx(walletId: Swift.Int64, rawTx: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func commonSignRawTx(actionToken: Swift.String = "", signature: Swift.String = "", smsCode: Swift.String = "", walletId: Swift.Int64, rawTx: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func commonSignRawTxSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func commonSignRawTxSms(actionToken: Swift.String, smsCode: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func commonSignRawTxBio(promptMessage: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func commonSignRawTxBio(promptMessage: Swift.String, walletId: Swift.Int64, rawTx: Swift.String, pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignedRawTxResult>)
+  public func getSolNftTokens(walletId: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetSolNftTokensResult>)
+}
+extension Swift.Array {
+  public subscript(safe index: Swift.Int) -> Element? {
+    get
+  }
+}
+public enum Direction : Swift.Int, Swift.CaseIterable {
+  case IN, OUT
+  public var name: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.Direction]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.Direction] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum TransactionExplainKind : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case Burn
+  case Mint
+  case Approve
+  case Deposit
+  case Withdraw
+  case EarlyWithdraw
+  case WithdrawReward
+  case WithdrawBonus
+  public var name: Swift.String {
+    get
+  }
+  public static func getKind(value: Swift.Int) -> CYBAVOWallet.TransactionExplainKind
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.TransactionExplainKind]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.TransactionExplainKind] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public protocol I18nStr {
+  var en: Swift.String { get }
+  var tw: Swift.String { get }
+  var cn: Swift.String { get }
+}
+public protocol TransactionExplain {
+  var kind: Swift.Int { get }
+  var isShowAmount: Swift.Bool { get }
+  var name: CYBAVOWallet.I18nStr { get }
+}
+public protocol Transaction {
+  var txid: Swift.String { get }
+  var fromAddress: Swift.String { get }
+  var toAddress: Swift.String { get }
+  var direction: CYBAVOWallet.Direction { get }
+  var amount: Swift.String { get }
+  var tokenId: Swift.String { get }
+  var transactionFee: Swift.String { get }
+  var timestamp: Swift.Int64 { get }
+  var pending: Swift.Bool { get }
+  var success: Swift.Bool { get }
+  var error: Swift.String { get }
+  var memo: Swift.String { get }
+  var description: Swift.String { get }
+  var platformFee: Swift.Bool { get }
+  var dropped: Swift.Bool { get }
+  var abiMethod: Swift.String { get }
+  var abiArguments: Swift.String { get }
+  var replaceable: Swift.Bool { get }
+  var replaced: Swift.Bool { get }
+  var replaceTxid: Swift.String { get }
+  var nonce: Swift.Int { get }
+  var relayer: Swift.Bool { get }
+  var preparingFee: Swift.Bool { get }
+  var explain: CYBAVOWallet.TransactionExplain { get }
+  var currency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+  var type: CYBAVOWallet.TransactionType { get }
+}
+public protocol TenderTransaction {
+  var transactionId: Swift.String { get }
+  var rawJson: Swift.String { get }
+  var inCurrency: Swift.String { get }
+  var inQuantity: Swift.String { get }
+  var outCurrency: Swift.String { get }
+  var outQuantity: Swift.String { get }
+  var createTime: Swift.String { get }
+  var status: Swift.String { get }
+}
+public protocol GetHistoryResult {
+  var start: Swift.Int { get }
+  var total: Swift.Int { get }
+  var transactions: Swift.Array<CYBAVOWallet.Transaction> { get }
+}
+public protocol GetTenderTransactionsResult {
+  var total: Swift.Int { get }
+  var history: Swift.Array<CYBAVOWallet.TenderTransaction> { get }
+}
+public struct Fee {
+  public let amount: Swift.String
+  public let description: Swift.String
+}
+public protocol GetTransactionFeeResult {
+  var high: CYBAVOWallet.Fee { get }
+  var medium: CYBAVOWallet.Fee { get }
+  var low: CYBAVOWallet.Fee { get }
+  var withdrawMin: Swift.String { get }
+}
+public protocol CreateTransactionResult {
+  var txno: Swift.String { get }
+  var txid: Swift.String { get }
+  var signedTx: Swift.String { get }
+  var realFee: Swift.String { get }
+}
+public protocol GetTransactionsInfoResult {
+  var transactionsInfo: [Swift.String : CYBAVOWallet.GetTransactionInfoResult] { get }
+}
+public enum TransactionType : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case MainDeposit
+  case MainWithdraw
+  case PrivDeposit
+  case PrivWithdraw
+  case PrivOuterDeposit
+  case PrivOuterWithdraw
+  case PrivProductDeposit
+  case PrivProductWithdraw
+  case PrivProductReward
+  public var name: Swift.String {
+    get
+  }
+  public static func getType(value: Swift.Int) -> CYBAVOWallet.TransactionType
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.TransactionType]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.TransactionType] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum Result<T> {
+  case success(T)
+  case failure(CYBAVOWallet.ApiError)
+}
+public typealias Callback<R> = (CYBAVOWallet.Result<R>) -> Swift.Void
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @IBDesignable @_Concurrency.MainActor(unsafe) public class PinSingleView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) final public let buttonText: UIKit.UILabel
+  @_Concurrency.MainActor(unsafe) open var buttonTextFont: UIKit.UIFont?
+  @_Concurrency.MainActor(unsafe) open var buttonTextSize: CoreGraphics.CGFloat
+  @_Concurrency.MainActor(unsafe) open var isAnimating: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) open var buttonWidth: Swift.Int
+  @_Concurrency.MainActor(unsafe) open var buttonHeight: Swift.Int
+  @_Concurrency.MainActor(unsafe) open var buttonBorderRadius: CoreGraphics.CGFloat
+  @_Concurrency.MainActor(unsafe) open var buttonBorderWidth: CoreGraphics.CGFloat
+  @_Concurrency.MainActor(unsafe) open var isSpecial: Swift.Bool
+  @_Concurrency.MainActor(unsafe) open var buttonBorderColorPressed: UIKit.UIColor
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var numberString: Swift.String {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonBorderColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var disabled: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonTextColorDisabled: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonBackgroundColorDisabled: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonBorderColorDisabled: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonBackgroundColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonTextColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonBackgroundColorPressed: UIKit.UIColor
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var buttonTextColorPressed: UIKit.UIColor
+  @objc override dynamic open func awakeFromNib()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+  @objc deinit
+}
+public enum SignInState {
+  case SignedIn
+  case SignedOut
+  case SessionExpired
+  case SessionInvalid
+  case Unknown
+  case needVerifyOtp
+  case needRegisterPhone
+  public static func == (a: CYBAVOWallet.SignInState, b: CYBAVOWallet.SignInState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol SignInStateDelegate : AnyObject {
+  func onUserStateChanged(state: CYBAVOWallet.SignInState)
+}
+public protocol SignInResult {
+}
+public protocol SignUpResult {
+}
+public protocol SetPushDeviceTokenResult {
+}
+public protocol RecoveryPinCodeResult {
+}
+public protocol VerifyRecoveryCodeResult {
+}
+public protocol ForgotPinCodeResult {
+  var handleNum: Swift.Int { get }
+}
+public protocol VerifyRestoreQuestionsResult {
+}
+public protocol GetRestoreQuestionsResult {
+  var questions: [Swift.String] { get }
+}
+public protocol ChangePinCodeResult {
+}
+public protocol GetUserStateResult {
+  var userState: CYBAVOWallet.UserState { get }
+}
+public protocol RegisterPhoneNumberResult {
+  var actionToken: Swift.String { get }
+}
+public protocol VerifyOtpResult {
+}
+public protocol RegisterReferralCodeResult {
+}
+public protocol UserState {
+  var setPin: Swift.Bool { get }
+  var setSecurityQuestions: Swift.Bool { get }
+  var realName: Swift.String { get }
+  var email: Swift.String { get }
+  var language: Swift.String { get }
+  var enableBiometrics: Swift.Bool { get }
+  var skipSmsVerify: Swift.Bool { get }
+  var accountSkipSmsVerify: Swift.Bool { get }
+  var smsVerified: Swift.Bool { get }
+  var enableWalletconnect: Swift.Bool { get }
+  var countryCode: Swift.String { get }
+  var phone: Swift.String { get }
+  var userReferralCode: Swift.String { get }
+  var linkUserReferralCode: Swift.String { get }
+  var liquidKey: Swift.String { get }
+}
+public protocol SetupPinCodeResult {
+}
+public protocol ValidatePinCodeResult {
+  var pass: Swift.Bool { get }
+}
+public class PinSecret {
+  public func hashValue() -> Swift.Int
+  public init(key: Swift.String)
+  public func getHashcode(key: Swift.String)
+  public func retain()
+  @objc deinit
+}
+public protocol CreateKycResult {
+}
+public protocol UpdateRealNameResult {
+}
+public protocol GetKycAccessTokenResult {
+  var token: Swift.String { get }
+  var flowName: Swift.String { get }
+  var apiUrl: Swift.String { get }
+}
+public protocol GetKycShareTokenResult {
+  var token: Swift.String { get }
+  var forClientId: Swift.String { get }
+}
+public protocol CheckKycSettingResult {
+  var result: Swift.Int { get }
+}
+public protocol GetApplicantStatusResult {
+  var createDate: Swift.String { get }
+  var reviewResult: CYBAVOWallet.ReviewResult? { get }
+  var reviewStatus: Swift.String { get }
+}
+public protocol UserSearchableInfo {
+  var referralCode: Swift.String { get }
+  var realName: Swift.String { get }
+}
+public protocol SearchUserResult {
+  var infos: Swift.Array<CYBAVOWallet.UserSearchableInfo> { get }
+}
+public protocol ReviewResult {
+  var moderationComment: Swift.String { get }
+  var clientComment: Swift.String { get }
+  var reviewAnswer: Swift.String { get }
+  var rejectLabels: Swift.Array<Swift.String> { get }
+  var reviewRejectType: Swift.String { get }
+}
+public protocol RevokeUserResult {
+  var result: Swift.Int { get }
+}
+@objc @_inheritsConvenienceInitializers open class SecureBuffer : ObjectiveC.NSObject {
+  public func append(character: Swift.String)
+  public func getStrengthLevel(checkLength: Swift.Int) -> Swift.Int
+  public func set(content: Swift.String)
+  public func get() -> Swift.String
+  public func getLength() -> Swift.Int
+  public func delete()
+  public func clear()
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class WalletSdk {
+  public static let shared: CYBAVOWallet.WalletSdk
+  public var endPoint: Swift.String {
+    get
+    set
+  }
+  public var apiCode: Swift.String {
+    get
+    set
+  }
+  public var apnsSandbox: Swift.Bool {
+    get
+    set
+  }
+  public func getSDKInfo() -> [Swift.String : Swift.String]
+  @objc deinit
+}
+public class BackupChallenge {
+  public init(question: Swift.String, answer: Swift.String) throws
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AbiUtil {
+  public static func arraySizeAndType(_ string: Swift.String) -> (Swift.String?, Swift.UInt?)
+  @objc deinit
+}
+public struct ApiError : Swift.Error {
+  public enum ErrorCode : Swift.Int {
+    case ErrUnknown
+    case ErrNotSignedIn
+    case ErrInvalidPinCode
+    case ErrConcurrentExecution
+    case ErrInvalidPinSecret
+    case ErrBiometricUnsupported
+    case ErrUserCancel
+    case ErrDisableAdmin
+    case ErrUserOrPasswordIncorrect
+    case ErrUserExist
+    case ErrUserDisabled
+    case ErrUserEmailEmpty
+    case ErrUserEmailExist
+    case ErrUserEmailFormatError
+    case ErrUserPasswordFormatError
+    case ErrUserAccountFormatError
+    case ErrUserRoleError
+    case ErrorUserPasswordError
+    case ErrInvalidParameter
+    case ErrPermissionDenied
+    case ErrNotAuthByPIN
+    case ErrNotAuthByOTP
+    case ErrUserInvalidPasswordToken
+    case ErrUserReject
+    case ErrNotImplemented
+    case ErrEncryptFailed
+    case ErrUserAuthMethodInvalid
+    case ErrUserUnactivated
+    case ErrUserInvalid
+    case ErrUserAlreadyActivated
+    case ErrUserRequireOTPSetup
+    case ErrOnlyAdminCanBeAdded
+    case ErrUserGetInfoFailed
+    case ErrUserNoPIN
+    case ErrAddUserDuplicate
+    case ErrAddUserFailed
+    case ErrUserUnauthorized
+    case ErrUserIncorrectPIN
+    case ErrClientVersion
+    case ErrAppMustUpdate
+    case ErrInvalidDeviceToken
+    case ErrUserIncorrectPINMaxRetry
+    case ErrShutdownInProgress
+    case ErrUserDeactivated
+    case ErrUserNameEmpty
+    case ErrMappedWallet
+    case ErrNotTokenWallet
+    case ErrNotCreateMultiMappedToSameAddr
+    case ErrMappedWalletOnly
+    case ErrConnectCCServer
+    case ErrUserIsLocked
+    case ErrUnlockCodeExpired
+    case ErrOperationTooFrequent
+    case ErrUpdateKeyInProgress
+    case ErrInvalidQRCode
+    case ErrForgotPINNotReady
+    case ErrInvalidRestoreCode
+    case ErrNoRecoveryCode
+    case ErrRegisterFail
+    case ErrRegistrationRequired
+    case ErrDisableSelf
+    case ErrForgotPINInvalid
+    case ErrForgotPINExpired
+    case ErrUnableChangeRole
+    case ErrForgotPINHandled
+    case ErrForgotPINNotApprove
+    case ErrAdminInfoNotFound
+    case ErrInvalidAdminPerm
+    case ErrUserIncorrectPINLock
+    case ErrUserIsUnlocked
+    case ErrUserIncorrectSQLock
+    case ErrUserPINAlreadySet
+    case ErrUserSecureTokenNotReady
+    case ErrUserSecurityQuestionsNotReady
+    case ErrInvalidUnlockToken
+    case ErrInvalidHashLength
+    case ErrInvalidAbiFunction
+    case ErrOperationTooFrequentShortly
+    case ErrUserPhoneNumUnverified
+    case ErrActionTokenInvalid
+    case ErrOTPCodeInvalid
+    case ErrRequireTooFrequent
+    case ErrInvalidSignature
+    case ErrBiometricsNotFound
+    case ErrDeviceOtpUnverified
+    case ErrOverSMSLimit
+    case ErrUserSkipSMSVerify
+    case ErrUserSMSVerifed
+    case ErrUserReferralAlreadySet
+    case ErrUserReferralNotSetSelf
+    case ErrReferralUserIdGreaterThenSelf
+    case ErrDepartmentInvalid
+    case ErrDepartmentTransactionNotFound
+    case ErrKeywordForSearchTooShort
+    case ErrInputStringTooLong
+    case ErrUserRevoked
+    case ErrWalletCreateFailed
+    case ErrWalletAddressInvalid
+    case ErrWalletCurrencyInvalid
+    case ErrWalletIDInvalid
+    case ErrWalletPolicyParseFailed
+    case ErrWalletPolicySetFailed
+    case ErrWalletPolicyGetFailed
+    case ErrPolicySignFail
+    case ErrPolicySignInvalid
+    case ErrPolicyState
+    case ErrPolicyTransFail
+    case ErrPolicyNotFound
+    case ErrPolicyNotPass
+    case ErrPolicyApprover
+    case ErrPolicyWalletNotFound
+    case ErrPolicyCurrencyNotMatch
+    case ErrPolicyCurrencyNotSupport
+    case ErrPolicyNotWalletCreator
+    case ErrPolicyWalletAddressDiff
+    case ErrPolicyWalletHeaderTrans
+    case ErrPolicyAmountTransferFail
+    case ErrPolicyWalletHeaderAmount
+    case ErrPolicyOutgoingAddressNull
+    case ErrPolicyOutgoingAddressQFail
+    case ErrPolicyOutgoingAddressInconsistent
+    case ErrPolicyAuditorDuplicateOrder
+    case ErrPolicyAuditorDuplicateUser
+    case ErrPolicyApproverDuplicateOrder
+    case ErrPolicyApproverDuplicateUser
+    case ErrPolicyOperatorDuplicateOrder
+    case ErrPolicyOperatorDuplicateUser
+    case ErrPolicyOperatorAmountTransFail
+    case ErrPolicyOperatorAmountUnderZero
+    case ErrPolicyOperatorTransUnderZero
+    case ErrPolicyOperatorAmountOverMax
+    case ErrPolicyOperatorTransOverMax
+    case ErrPolicyApproverAmountTransFail
+    case ErrPolicyApproverAmountUnderZero
+    case ErrPolicyMaxAppOverMaxOp
+    case ErrPolicyNoOperator
+    case ErrPolicyPINNotSet
+    case ErrPolicyUserNotExist
+    case ErrPolicyApproverNotCosigner
+    case ErrPolicyAllCosignersNotApprover
+    case ErrPolicyApproverConfigureIncorrectly
+    case ErrPolicyLevelIncorrect
+    case ErrPolicyOwnerIncorrect
+    case ErrWalletNotOperation
+    case ErrScheduleWithdrawNotFound
+    case ErrScheduleWithdrawNotCreator
+    case ErrNoWalletToBackup
+    case ErrInvalidBackupAnswer
+    case ErrWalletMnemonicDuplicate
+    case ErrScheduleWithdrawExceedPolicyAmount
+    case ErrScheduleWithdrawNotOperator
+    case ErrScheduleWithdrawNotOutgoing
+    case ErrScheduleWithdrawCheckBalanceFailed
+    case ErrScheduleWithdrawInvalid
+    case ErrGetTransactionFeeError
+    case ErrNotPendingNow
+    case ErrInvalidFeeLevel
+    case ErrSignBatchTransactionFailed
+    case ErrWalletKeyNotReady
+    case ErrNotBatchWallet
+    case ErrNotBatchTransaction
+    case ErrExceedMaxBatchAmount
+    case ErrOngoingBatchTransaction
+    case ErrTxIDNotFound
+    case ErrNotWalletOwner
+    case ErrNotAdmin
+    case ErrInvalidWalletId
+    case ErrWalletAlreadyCreated
+    case ErrTransactionSameAddress
+    case ErrDestinationNotInOutgoingAddress
+    case ErrApiSecretExpired
+    case ErrAPISecretNotValid
+    case ErrExpiredTx
+    case ErrCPUUsageExceeded
+    case ErrNetUsageExceeded
+    case ErrRAMUsageExceeded
+    case ErrorInsufficientStakedCPU
+    case ErrorInsufficientStakedNet
+    case ErrorInsufficientQuota
+    case ErrTransactionNotReplaceable
+    case ErrBalanceUppoerTransFail
+    case ErrBalanceLowerTransFail
+    case ErrBalanceLOverU
+    case ErrBalanceIntervalIncorrect
+    case ErrBalanceDBNotFound
+    case ErrBalanceItemNotMatch
+    case ErrBalanceIdInvalid
+    case ErrNoContractCode
+    case ErrInvalidLedgerConfig
+    case ErrExpiredToken
+    case ErrVerifyFail
+    case ErrVerifyExceed
+    case ErrParameterNoToken
+    case ErrParameterInvalidOperation
+    case ErrOperationFailed
+    case ErrSKUInfoFailed
+    case ErrSKUUserLimit
+    case ErrSKUWalletLimit
+    case ErrSKUOutgoingLimit
+    case ErrTransactionInsufficientFund
+    case ErrTransactionUTXOInsufficientFund
+    case ErrUTXOTemporarilyNotAvailable
+    case ErrFullNodeSyncing
+    case ErrOutgoingAddressDuplicate
+    case ErrOutgoingAddressIdInvalid
+    case ErrKMSNotReady
+    case ErrInvalidApiCode
+    case ErrDuplicateApp
+    case ErrSDKOutdated
+    case ErrorFeeLowerBound
+    case ErrorFeeUpperBound
+    case ErrorInnerFeeAmount
+    case ErrorTransferAmountFail
+    case ErrFailToGetFee
+    case ErrFeeTooHigh
+    case ErrParseTransactionFail
+    case ErrNotSupportInnerFee
+    case ErrorFeeOverUpper
+    case ErrorInnerFeeAddress
+    case ErrNoTRONForEnergy
+    case ErrorInsufficientBandWidth
+    case ErrorDestNotExist
+    case ErrTransactionInsufficientBTCFee
+    case ErrTransactionInsufficientETHFee
+    case ErrTransactionInsufficientBTCUTXOFee
+    case ErrDustFail
+    case ErrUTXOExceedMax
+    case ErrUTXONotEnough
+    case ErrInsufficientFundBNB
+    case ErrorTxNoResult
+    case ErrorSendTxFail
+    case ErrorIllegalFormat
+    case ErrorAccountNotCreate
+    case ErrorIncorrectTag
+    case ErrInvalidEOSFormat
+    case ErrInvalidAppId
+    case ErrInvalidPinpointAppId
+    case ErrEOSAccountExisted
+    case ErrReferralCodeIncorrect
+    case ErrGoogleAuthError
+    case ErrWechatAuthError
+    case ErrFacebookAuthError
+    case ErrLineAuthError
+    case ErrInvalidPINToken
+    case ErrorRamOperationMinAmount
+    case ErrOutgoingAddressNotMatch
+    case ErrWalletInnerFeeIncorrect
+    case ErrWalletCreateInnerTxFail
+    case ErrNoTranslation
+    case ErrTransactionInsufficientLTCFee
+    case ErrTransactionInsufficientLTCUTXOFee
+    case ErrTransactionInsufficientBCHFee
+    case ErrTransactionInsufficientBCHUTXOFee
+    case ErrOverPersonalCurrencyLimit
+    case ErrKycNotCreated
+    case ErrKycSettingsNotFound
+    case ErrSmartchainInvalidMemoFormat
+    case ErrSmartchainInvalidAmountFormat
+    case ErrSmartchainBalanceCheckFailed
+    case ErrSmartchainDepositMinCheckFailed
+    case ErrSmartchainDepositMaxCheckFailed
+    case ErrSmartchainProductIsOutOfStock
+    case ErrSmartchainOperationFailed
+    case ErrSmartchainBalanceSmallerThanMinWithdraw
+    case ErrSmartchainCallAmountExceedsBalance
+    case ErrSmartchainCallAmountExceedsAllowance
+    case ErrSmartchainCallZeroAddr
+    case ErrSmartchainCallDepositStop
+    case ErrSmartchainCallWithdrawStop
+    case ErrSmartchainCallRateLimit
+    case ErrSmartchainCallWithdrawLimit
+    case ErrSmartchainCallMaxUserLimit
+    case ErrSmartchainCallMaxUserOrderLimit
+    case ErrSmartchainCallMaxDepositAmountLimit
+    case ErrSmartchainCallAmountNotMatch
+    case ErrSmartchainCallOrderNotExist
+    case ErrSmartchainCallOrderExist
+    case ErrSmartchainCallNoProfitSharing
+    case ErrSmartchainCallAmountSmallThenZero
+    case ErrSmartchainCallNotAllowWithdraw
+    case ErrSmartchainCallNotAllowEarlyWithdraw
+    case ErrSmartchainCallTransferSmallThenZero
+    case NSURLErrorAppTransportSecurityRequiresSecureConnection
+    case NSURLErrorBackgroundSessionInUseByAnotherProcess
+    case NSURLErrorBackgroundSessionRequiresSharedContainer
+    case NSURLErrorBackgroundSessionWasDisconnected
+    case NSURLErrorBadServerResponse
+    case NSURLErrorBadURL
+    case NSURLErrorCallIsActive
+    case NSURLErrorCancelled
+    case NSURLErrorCannotCloseFile
+    case NSURLErrorCannotConnectToHost
+    case NSURLErrorCannotCreateFile
+    case NSURLErrorCannotDecodeContentData
+    case NSURLErrorCannotDecodeRawData
+    case NSURLErrorCannotFindHost
+    case NSURLErrorCannotLoadFromNetwork
+    case NSURLErrorCannotMoveFile
+    case NSURLErrorCannotOpenFile
+    case NSURLErrorCannotParseResponse
+    case NSURLErrorCannotRemoveFile
+    case NSURLErrorCannotWriteToFile
+    case NSURLErrorClientCertificateRejected
+    case NSURLErrorClientCertificateRequired
+    case NSURLErrorDataLengthExceedsMaximum
+    case NSURLErrorDataNotAllowed
+    case NSURLErrorDNSLookupFailed
+    case NSURLErrorDownloadDecodingFailedMidStream
+    case NSURLErrorDownloadDecodingFailedToComplete
+    case NSURLErrorFileDoesNotExist
+    case NSURLErrorFileIsDirectory
+    case NSURLErrorFileOutsideSafeArea
+    case NSURLErrorHTTPTooManyRedirects
+    case NSURLErrorInternationalRoamingOff
+    case NSURLErrorNetworkConnectionLost
+    case NSURLErrorNoPermissionsToReadFile
+    case NSURLErrorNotConnectedToInternet
+    case NSURLErrorRedirectToNonExistentLocation
+    case NSURLErrorRequestBodyStreamExhausted
+    public var name: Swift.String {
+      get
+    }
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public let code: CYBAVOWallet.ApiError.ErrorCode
+  public let message: Swift.String
+  public let detailMessage: Swift.String
+  public var name: Swift.String {
+    get
+  }
+  public init(code: CYBAVOWallet.ApiError.ErrorCode, message: Swift.String, detailMessage: Swift.String = "")
+}
+extension CYBAVOWallet.ApiError.ErrorCode : Swift.CaseIterable {
+  public typealias AllCases = [CYBAVOWallet.ApiError.ErrorCode]
+  public static var allCases: [CYBAVOWallet.ApiError.ErrorCode] {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class PinSecretHelper {
+  public static func delete(key: Swift.String)
+  public static func put(message: Swift.String) -> Swift.String
+  public static func generateKey() -> Swift.String
+  @objc deinit
+}
+public protocol PinInputProtocol {
+  func setKeepKey(isKeep: Swift.Bool)
+  func setOnPinInputListener(delegate: CYBAVOWallet.OnPinInputListener)
+  func setMaxLength(length: Swift.Int)
+  func setFixedOrder(fixed: Swift.Bool)
+  func setHapticFeedback(hapicFeedback: Swift.Bool)
+  func setHorizontalSpacing(spacing: Swift.Int)
+  func setVerticalSpacing(spacing: Swift.Int)
+  func getMaxLength() -> Swift.Int
+  func getCurrentLength() -> Swift.Int
+  func submit() -> CYBAVOWallet.PinSecret
+  func clear()
+}
+public protocol OnPinInputListener : AnyObject {
+  func onChanged(length: Swift.Int)
+}
+public class StyleAttr {
+  public var fixedOrder: Swift.Bool
+  public var disabled: Swift.Bool
+  public var buttonWidth: Swift.Int
+  public var buttonHeight: Swift.Int
+  public var horizontalSpacing: Swift.Int
+  public var verticalSpacing: Swift.Int
+  public var buttonTextFont: UIKit.UIFont?
+  public var buttonTextColor: UIKit.UIColor
+  public var buttonTextColorPressed: UIKit.UIColor
+  public var buttonTextColorDisabled: UIKit.UIColor
+  public var buttonBackgroundColor: UIKit.UIColor
+  public var buttonBackgroundColorPressed: UIKit.UIColor
+  public var buttonBackgroundColorDisabled: UIKit.UIColor
+  public var buttonBorderRadius: CoreGraphics.CGFloat
+  public var buttonBorderWidth: CoreGraphics.CGFloat
+  public var buttonBorderColor: UIKit.UIColor
+  public var buttonBorderColorPressed: UIKit.UIColor
+  public var buttonBorderColorDisabled: UIKit.UIColor
+  public var backspaceButtonWidth: Swift.Int
+  public var backspaceButtonHeight: Swift.Int
+  public var backspaceButtonTextFont: UIKit.UIFont?
+  public var backspaceButtonTextColor: UIKit.UIColor
+  public var backspaceButtonTextColorPressed: UIKit.UIColor
+  public var backspaceButtonTextColorDisabled: UIKit.UIColor
+  public var backspaceButtonBorderRadius: CoreGraphics.CGFloat
+  public var backspaceButtonBorderWidth: CoreGraphics.CGFloat
+  public var backspaceButtonBorderColor: UIKit.UIColor
+  public var backspaceButtonBorderColorPressed: UIKit.UIColor
+  public var backspaceButtonBorderColorDisabled: UIKit.UIColor
+  public var backspaceButtonBackgroundColor: UIKit.UIColor
+  public var backspaceButtonBackgroundColorPressed: UIKit.UIColor
+  public var backspaceButtonBackgroundColorDisabled: UIKit.UIColor
+  public var backspaceButtonText: Swift.String
+  public init(fixedOrder: Swift.Bool = false, disabled: Swift.Bool = false, buttonWidth: Swift.Int = 70, buttonHeight: Swift.Int = 70, horizontalSpacing: Swift.Int = 3, verticalSpacing: Swift.Int = 3, buttonTextFont: UIKit.UIFont? = nil, buttonTextColor: UIKit.UIColor = UIColor.darkText, buttonTextColorPressed: UIKit.UIColor = UIColor.lightText, buttonTextColorDisabled: UIKit.UIColor = UIColor.lightText, buttonBackgroundColor: UIKit.UIColor = UIColor.lightGray, buttonBackgroundColorPressed: UIKit.UIColor = UIColor.lightGray, buttonBackgroundColorDisabled: UIKit.UIColor = UIColor.lightGray, buttonBorderRadius: CoreGraphics.CGFloat = 72, buttonBorderWidth: CoreGraphics.CGFloat = 0, buttonBorderColor: UIKit.UIColor = UIColor.lightGray, buttonBorderColorPressed: UIKit.UIColor = UIColor.darkGray, buttonBorderColorDisabled: UIKit.UIColor = UIColor.gray, backspaceButtonWidth: Swift.Int = 70, backspaceButtonHeight: Swift.Int = 70, backspaceButtonTextFont: UIKit.UIFont? = nil, backspaceButtonTextColor: UIKit.UIColor = UIColor.darkText, backspaceButtonTextColorPressed: UIKit.UIColor = UIColor.lightText, backspaceButtonTextColorDisabled: UIKit.UIColor = UIColor.lightText, backspaceButtonBackgroundColor: UIKit.UIColor = UIColor.lightGray, backspaceButtonBackgroundColorPressed: UIKit.UIColor = UIColor.lightGray, backspaceButtonBackgroundColorDisabled: UIKit.UIColor = UIColor.lightGray, backspaceButtonBorderRadius: CoreGraphics.CGFloat = 72, backspaceButtonBorderWidth: CoreGraphics.CGFloat = 0, backspaceButtonBorderColor: UIKit.UIColor = UIColor.lightGray, backspaceButtonBorderColorPressed: UIKit.UIColor = UIColor.darkGray, backspaceButtonBorderColorDisabled: UIKit.UIColor = UIColor.darkGray, backspaceButtonText: Swift.String = "⌫")
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class NumericPinCodeInputView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) open var pinSingleViews: [CYBAVOWallet.PinSingleView]
+  @_Concurrency.MainActor(unsafe) open var styleAttr: CYBAVOWallet.StyleAttr {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @_Concurrency.MainActor(unsafe) public func setDiabled(disabled: Swift.Bool)
+  @objc deinit
+}
+extension CYBAVOWallet.NumericPinCodeInputView {
+  @_Concurrency.MainActor(unsafe) public func onTapped(_ pinSingleView: CYBAVOWallet.PinSingleView, tappedString: Swift.String)
+}
+extension CYBAVOWallet.NumericPinCodeInputView : CYBAVOWallet.PinInputProtocol {
+  @_Concurrency.MainActor(unsafe) public func setKeepKey(isKeep: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func setOnPinInputListener(delegate: CYBAVOWallet.OnPinInputListener)
+  @_Concurrency.MainActor(unsafe) public func setMaxLength(length: Swift.Int)
+  @_Concurrency.MainActor(unsafe) public func setFixedOrder(fixed: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func setHapticFeedback(hapicFeedback: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func setHorizontalSpacing(spacing: Swift.Int)
+  @_Concurrency.MainActor(unsafe) public func setVerticalSpacing(spacing: Swift.Int)
+  @_Concurrency.MainActor(unsafe) public func setButtonTextFont(font: UIKit.UIFont)
+  @_Concurrency.MainActor(unsafe) public func buttonTextColor(color: UIKit.UIColor)
+  @_Concurrency.MainActor(unsafe) public func buttonBackgroundColorPressed(color: UIKit.UIColor)
+  @_Concurrency.MainActor(unsafe) public func setBackspaceButtonText(text: Swift.String)
+  @_Concurrency.MainActor(unsafe) public func getStrengthLevel(checkLength: Swift.Int) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) public func isSamePin(pinSecret1: CYBAVOWallet.PinSecret, pinSecret2: CYBAVOWallet.PinSecret) -> Swift.Bool
+  @_Concurrency.MainActor(unsafe) public func getMaxLength() -> Swift.Int
+  @_Concurrency.MainActor(unsafe) public func getCurrentLength() -> Swift.Int
+  @_Concurrency.MainActor(unsafe) public func submit() -> CYBAVOWallet.PinSecret
+  @_Concurrency.MainActor(unsafe) public func clear()
+  @_Concurrency.MainActor(unsafe) public func submitForMultiple() -> CYBAVOWallet.PinSecret
+  @_Concurrency.MainActor(unsafe) public func submitPlain() -> Swift.String
+}
+@objc @_inheritsConvenienceInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class PinInputIndicatorView : UIKit.UIView {
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var inputDotCount: Swift.Int {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) open var drawText: Swift.Bool
+  @_Concurrency.MainActor(unsafe) open var filledPlaceholder: Swift.String
+  @_Concurrency.MainActor(unsafe) open var unfilledPlaceholder: Swift.String
+  @_Concurrency.MainActor(unsafe) open var height: CoreGraphics.CGFloat
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var totalDotCount: Swift.Int {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var strokeColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) open var fillColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) open var isFull: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func draw(_ rect: CoreGraphics.CGRect)
+  @objc override dynamic open func awakeFromNib()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @_Concurrency.MainActor(unsafe) open func shakeAnimationWithCompletion(_ completion: @escaping () -> ())
+  @objc deinit
+}
+public enum BiometryType : Swift.Int {
+  case UNKNOWN
+  case NONE
+  case FACE
+  case FINGER
+  public var name: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension CYBAVOWallet.BiometryType : Swift.CaseIterable {
+  public typealias AllCases = [CYBAVOWallet.BiometryType]
+  public static var allCases: [CYBAVOWallet.BiometryType] {
+    get
+  }
+}
+public protocol MarketInfo {
+  var currency: Swift.String { get }
+  var symbol: Swift.String { get }
+  var price: Swift.String { get }
+  var trend: Swift.String { get }
+  var capitalization: Swift.String { get }
+  var dominance: Swift.String { get }
+  var queryDate: Swift.Int64 { get }
+  var iconUrl: Swift.String { get }
+}
+public protocol CurrencyInfo {
+  var exchangeCurrency: Swift.String { get }
+  var price: Swift.Double { get }
+}
+public protocol TokenUriInternal {
+  var tokenUri: Swift.String { get }
+  var name: Swift.String { get }
+  var image: Swift.String { get }
+  var description: Swift.String { get }
+}
+public protocol AddressTagsInternal {
+  var blackList: Swift.Bool { get }
+  var whiteList: Swift.Bool { get }
+  var tags: Swift.Array<Swift.String> { get }
+  var providers: [Swift.String : Swift.Array<Swift.String>] { get }
+  var provider: Swift.String { get }
+  var score: Swift.Double { get }
+}
+public protocol WalletIdStatusRes {
+  var walletId: Swift.Int64 { get }
+  var status: Swift.Int64 { get }
+}
+public protocol ContractCurrency {
+  var currency: Swift.Int64 { get }
+  var contractAddress: Swift.String { get }
+}
+public protocol FailedResult {
+  var contractCurrency: CYBAVOWallet.ContractCurrency? { get }
+  var errorMsg: Swift.String { get }
+}
+public protocol AddContractCurrenciesRes {
+  var successResults: Swift.Array<CYBAVOWallet.WalletIdStatusRes> { get }
+  var failResults: Swift.Array<CYBAVOWallet.FailedResult> { get }
+}
+public protocol GetMarketInfosResult {
+  var marketInfos: Swift.Array<CYBAVOWallet.MarketInfo> { get }
+}
+public protocol CryptoCurrencyInfo {
+  var cryptoCurrency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+  var currencyInfos: Swift.Array<CYBAVOWallet.CurrencyInfo> { get }
+}
+public protocol TokenUriInfoInternal {
+  var tokenAddress: Swift.String { get }
+  var tokenId: Swift.String { get }
+  var errorMessage: Swift.String { get }
+  var uriInfo: CYBAVOWallet.TokenUriInternal? { get }
+}
+public protocol AddressTagInfoInternal {
+  var address: Swift.String { get }
+  var errorMessage: Swift.String { get }
+  var addressTags: CYBAVOWallet.AddressTagsInternal? { get }
+}
+public protocol GetMultipleTokenUriResultInteral {
+  var tokenUriInfos: Swift.Array<CYBAVOWallet.TokenUriInfoInternal> { get }
+}
+public protocol GetAddressTagsInfoResultInteral {
+  var addressTagsList: Swift.Array<CYBAVOWallet.AddressTagInfoInternal> { get }
+}
+public protocol GetCurrencyPricesResult {
+  var cryptoCurrencyInfos: Swift.Array<CYBAVOWallet.CryptoCurrencyInfo> { get }
+}
+public protocol CurrencyType {
+  var currency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+}
+public protocol GetCurrenciesResult {
+  var currencies: Swift.Array<CYBAVOWallet.Currency> { get }
+}
+public protocol QueryCoinTypeResult {
+  var coinItems: Swift.Array<CYBAVOWallet.CurrencyType> { get }
+  var trimmedAddress: Swift.String { get }
+}
+public protocol Currency : CYBAVOWallet.CurrencyType {
+  var symbol: Swift.String { get }
+  var displayName: Swift.String { get }
+  var tokenVersion: Swift.Int64 { get }
+  var tokenDecimals: Swift.String { get }
+  var chainId: Swift.Int64 { get }
+  var chainName: Swift.String { get }
+  var caip2ChainId: Swift.String { get }
+  var isPrivate: Swift.Bool { get }
+  var mapToPublicType: Swift.Int { get }
+  var mapToPublicTokenAddress: Swift.String { get }
+  var mapToPublicName: Swift.String { get }
+  var canCreateFinanceWallet: Swift.Bool { get }
+}
+public protocol GetSolNftTokensResult {
+  var tokens: Swift.Array<CYBAVOWallet.TokenMeta> { get }
+}
+public protocol GetWalletResult {
+  var wallet: CYBAVOWallet.Wallet? { get }
+}
+public protocol GetWalletsResult {
+  var wallets: Swift.Array<CYBAVOWallet.Wallet> { get }
+}
+public protocol CreateWalletResult {
+  var walletId: Swift.Int64 { get }
+}
+public protocol SignedRawTxResult {
+  var signedTx: Swift.String { get }
+  var signatures: [Swift.String : Swift.String] { get }
+}
+public protocol SetSolTokenAccountTransactionResult {
+  var txid: Swift.String { get }
+}
+public protocol SignedMessageResult {
+  var signedMessage: Swift.String { get }
+}
+public protocol SendSignedTxResult {
+  var state: Swift.Bool { get }
+  var txid: Swift.String { get }
+}
+public protocol AddTenderTransactionResult {
+  var uuid: Swift.String { get }
+}
+public protocol Wallet : CYBAVOWallet.BalanceAddress, CYBAVOWallet.CurrencyType {
+  var walletId: Swift.Int64 { get }
+  var type: CYBAVOWallet.WalletType { get }
+  var address: Swift.String { get }
+  var tokenAddress: Swift.String { get }
+  var name: Swift.String { get }
+  var currency: Swift.Int { get }
+  var currencySymbol: Swift.String { get }
+  var chainId: Swift.Int64 { get }
+  var chainName: Swift.String { get }
+  var caip2ChainId: Swift.String { get }
+  var isPrivate: Swift.Bool { get }
+  var mapToPublicCurrency: Swift.Int { get }
+  var mapToPublicTokenAddress: Swift.String { get }
+  var mapToPublicName: Swift.String { get }
+  var walletCode: Swift.String { get }
+  var depositAddresses: Swift.Array<CYBAVOWallet.DepositAddress> { get }
+  var isPrivateDisabled: Swift.Bool { get }
+}
+public enum TokenStandard : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case NonFungible
+  case FungibleAsset
+  case Fungible
+  public var name: Swift.String {
+    get
+  }
+  public static func getTokenStandard(value: Swift.Int) -> CYBAVOWallet.TokenStandard
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.TokenStandard]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.TokenStandard] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public protocol TokenMeta {
+  var tokenAddress: Swift.String { get }
+  var name: Swift.String { get }
+  var symbol: Swift.String { get }
+  var uri: Swift.String { get }
+  var decimals: Swift.Int64 { get }
+  var supply: Swift.String { get }
+  var tokenStandard: CYBAVOWallet.TokenStandard { get }
+  var balance: Swift.String? { get }
+}
+public protocol DepositAddress {
+  var mapToPublicCurrency: Swift.Int { get }
+  var mapToPublicTokenAddress: Swift.String { get }
+  var currency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+  var address: Swift.String { get }
+  var memo: Swift.String { get }
+}
+public protocol Balance {
+  var balance: Swift.String { get }
+  var tokenBalance: Swift.String { get }
+  var unconfirmedBalance: Swift.String { get }
+  var tokens: Swift.Array<Swift.String> { get }
+  var availableBalance: Swift.String { get }
+  var tokenIdAmounts: Swift.Array<CYBAVOWallet.TokenIdAmount> { get }
+}
+public protocol TokenIdAmount {
+  var tokenId: Swift.String { get }
+  var amount: Swift.String { get }
+}
+public protocol GetBalanceResult {
+  var balance: [Swift.Int64 : CYBAVOWallet.Balance] { get }
+}
+public protocol RenameWalletResult {
+}
+public protocol RegisterTokenIdsResult {
+}
+public protocol GetWalletUsageResult {
+  var dailyTransactionAmountUsage: Swift.String { get }
+  var dailyTransactionAmountQuota: Swift.String { get }
+}
+public protocol BalanceAddress {
+  var currency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+  var address: Swift.String { get }
+}
+public protocol CallAbiFunctionResult {
+  var txid: Swift.String { get }
+  var signedTx: Swift.String { get }
+  var output: Swift.String { get }
+}
+public protocol GetTransactionInfoResult {
+  var blockNumber: Swift.Int64 { get }
+  var confirmBlocks: Swift.Int64 { get }
+  var blockTimeStamp: Swift.Int64 { get }
+  var fee: Swift.String { get }
+  var result: Swift.String { get }
+  var success: Swift.Bool { get }
+  var amount: Swift.String { get }
+  var from: Swift.String { get }
+  var to: Swift.String { get }
+  var contractAddress: Swift.String { get }
+  var data: Swift.String { get }
+  var abiMethod: Swift.String { get }
+  var abiArguments: Swift.String { get }
+  var replaceable: Swift.Bool { get }
+  var replaced: Swift.Bool { get }
+  var replaceTxid: Swift.String { get }
+  var nonce: Swift.Int { get }
+  var preparingFee: Swift.Bool { get }
+}
+public protocol GetCurrencyTraitsResult {
+  var granularity: Swift.String { get }
+  var existentialDeposit: Swift.String { get }
+  var minimumAccountBalance: Swift.String { get }
+}
+public protocol GetEstimateGasResult {
+  var gasLimit: Swift.Int64 { get }
+}
+public protocol GetSameCurrencyWalletLimitResult {
+  var walletLimit: Swift.Int { get }
+}
+public protocol GetEosResourcesStateResult {
+  var ramQuota: Swift.Int64 { get }
+  var ramUsage: Swift.Int64 { get }
+  var netUsed: Swift.Int64 { get }
+  var netAvailable: Swift.Int64 { get }
+  var netMax: Swift.Int64 { get }
+  var netAmount: Swift.Int64 { get }
+  var netAmountPrecision: Swift.Int { get }
+  var netRefund: Swift.Int64 { get }
+  var netRefundPrecision: Swift.Int { get }
+  var cpuUsed: Swift.Int64 { get }
+  var cpuAvailable: Swift.Int64 { get }
+  var cpuMax: Swift.Int64 { get }
+  var cpuAmount: Swift.Int64 { get }
+  var cpuAmountPrecision: Swift.Int { get }
+  var cpuRefund: Swift.Int64 { get }
+  var cpuRefundPrecision: Swift.Int { get }
+}
+@_hasMissingDesignatedInitializers public class ReplaceTransactionResult {
+  public var txno: Swift.Int64
+  public var txid: Swift.String
+  @objc deinit
+}
+public protocol GetEosRamPriceResult {
+  var ramPrice: Swift.String { get }
+}
+public protocol GetEosAccountValidResult {
+  var valid: Swift.Bool { get }
+  var exist: Swift.Bool { get }
+}
+public protocol EstimateTransactionResult {
+  var transactionAmount: Swift.String { get }
+  @available(*, deprecated, renamed: "transactionAmount")
+  var tranasctionAmout: Swift.String { get }
+  var platformFee: Swift.String { get }
+  var blockchainFee: Swift.String { get }
+  var withdrawMin: Swift.String { get }
+}
+public enum Status : Swift.Int {
+  case WAITING, FAILED, DONE, DROPPED
+  public var name: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension CYBAVOWallet.Status : Swift.CaseIterable {
+  public typealias AllCases = [CYBAVOWallet.Status]
+  public static var allCases: [CYBAVOWallet.Status] {
+    get
+  }
+}
+public protocol ApiHistoryItemInternal {
+  var walletId: Swift.Int64 { get }
+  var walletName: Swift.String { get }
+  var userId: Swift.Int64 { get }
+  var apiName: Swift.String { get }
+  var createTime: Swift.String { get }
+  var txid: Swift.String { get }
+  var message: Swift.String { get }
+  var status: Swift.Int { get }
+  var accessId: Swift.String { get }
+  var nonce: Swift.Int64? { get }
+  var gasPrice: Swift.String { get }
+  var gasLimit: Swift.String { get }
+  var tokenAddress: Swift.String { get }
+}
+public protocol GetApiHistoryResult {
+  var start: Swift.Int { get }
+  var total: Swift.Int64 { get }
+  var apiHistoryItems: Swift.Array<CYBAVOWallet.ApiHistoryItemInternal> { get }
+}
+public protocol WalletConnectGetSupportedChainResult {
+  var chainMap: [Swift.String : CYBAVOWallet.ChainInfo] { get }
+}
+public protocol WalletConnectSyncResult {
+  var walletIds: [Swift.Int64] { get }
+}
+public protocol GetNonceResult {
+  var nonce: Swift.Int64 { get }
+}
+public protocol GetWalletConnectSignedTxResult {
+  var signedTx: Swift.String { get }
+}
+public protocol GetWalletConnectUnsignedDataResult {
+  var unsignedData: Swift.String { get }
+}
+public protocol GetActionTokenResult {
+  var actionToken: Swift.String { get }
+}
+@_hasMissingDesignatedInitializers public class GetSignedActionTokenResult {
+  @objc deinit
+}
+public protocol RegisterPubkeyResult {
+}
+public protocol UpdateDeviceInfoResult {
+}
+public enum FinancialBonusKind : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case FirstTimeRebate
+  case SavingRebate
+  public var name: Swift.String {
+    get
+  }
+  public static func getKind(value: Swift.Int) -> CYBAVOWallet.FinancialBonusKind
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.FinancialBonusKind]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.FinancialBonusKind] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum FinancialHistoryListKind : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case Depositing
+  case Withdraw
+  case WithdrawReward
+  public var name: Swift.String {
+    get
+  }
+  public static func getListKind(value: Swift.Int) -> CYBAVOWallet.FinancialHistoryListKind
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.FinancialHistoryListKind]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.FinancialHistoryListKind] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum FinancialHistoryStatus : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case Depositing
+  case CanWithdraw
+  case Withdraw
+  case EarlyWithdraw
+  public var name: Swift.String {
+    get
+  }
+  public static func getStatus(value: Swift.Int) -> CYBAVOWallet.FinancialHistoryStatus
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.FinancialHistoryStatus]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.FinancialHistoryStatus] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum FinancialProductListKind : Swift.Int, Swift.CaseIterable {
+  case All
+  case UserDeposit
+  case DemandDeposit
+  case FixedDeposit
+  case Campaign
+  public var name: Swift.String {
+    get
+  }
+  public static func getListKind(value: Swift.Int) -> CYBAVOWallet.FinancialProductListKind
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.FinancialProductListKind]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.FinancialProductListKind] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum FinancialProductKind : Swift.Int, Swift.CaseIterable {
+  case Unknown
+  case FixedDeposit
+  case DemandDeposit
+  public var name: Swift.String {
+    get
+  }
+  public static func getKind(value: Swift.Int) -> CYBAVOWallet.FinancialProductKind
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [CYBAVOWallet.FinancialProductKind]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [CYBAVOWallet.FinancialProductKind] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public protocol FinancialProduct {
+  var uuid: Swift.String { get }
+  var kind: CYBAVOWallet.FinancialProductKind { get }
+  var publicCurrency: Swift.Int { get }
+  var publicTokenAddress: Swift.String { get }
+  var publicName: Swift.String { get }
+  var title: CYBAVOWallet.I18nStr { get }
+  var userReward: Swift.String { get }
+  var userDeposit: Swift.String { get }
+  var userTotal: Swift.String { get }
+  var userWaitToWithdraw: Swift.Int { get }
+  var allReward: Swift.String { get }
+  var allDeposit: Swift.String { get }
+  var allTotal: Swift.String { get }
+  var userCount: Swift.Int { get }
+  var userPercent: Swift.Double { get }
+  var maxUsers: Swift.Int { get }
+  var minDeposit: Swift.String { get }
+  var maxDeposit: Swift.String { get }
+  var rate: Swift.String { get }
+  var ​​ratePercent: Swift.Double { get }
+  var currency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+  var isNeedApprove: Swift.Bool { get }
+  var isCanDeposit: Swift.Bool { get }
+  var isCanWithdraw: Swift.Bool { get }
+  var isCanWithdrawReward: Swift.Bool { get }
+  var isCanEarlyWithdraw: Swift.Bool { get }
+  var startTimestamp: Swift.Int { get }
+  var endTimestamp: Swift.Int { get }
+  var rewardTimestamp: Swift.Int { get }
+}
+public protocol GetFinancialProductsResult {
+  var userDeposits: Swift.Array<CYBAVOWallet.FinancialProduct> { get }
+  var demandDeposits: Swift.Array<CYBAVOWallet.FinancialProduct> { get }
+  var fixedDeposits: Swift.Array<CYBAVOWallet.FinancialProduct> { get }
+  var campaign: Swift.Array<CYBAVOWallet.FinancialProduct> { get }
+}
+public protocol FinancialHistory {
+  var productUuid: Swift.String { get }
+  var uuid: Swift.String { get }
+  var status: CYBAVOWallet.FinancialHistoryStatus { get }
+  var userReward: Swift.String { get }
+  var userDeposit: Swift.String { get }
+  var userTotal: Swift.String { get }
+  var userWaitToWithdraw: Swift.Int { get }
+  var startTimestamp: Swift.Int { get }
+  var endTimestamp: Swift.Int { get }
+  var rewardTimestamp: Swift.Int { get }
+  var isNeedApprove: Swift.Bool { get }
+  var isCanDeposit: Swift.Bool { get }
+  var isCanWithdraw: Swift.Bool { get }
+  var isCanWithdrawReward: Swift.Bool { get }
+  var isCanEarlyWithdraw: Swift.Bool { get }
+  var orderId: Swift.String { get }
+}
+public protocol GetFinancialHistoryResult {
+  var kind: CYBAVOWallet.FinancialHistoryListKind { get }
+  var prevPage: Swift.String? { get }
+  var nextPage: Swift.String? { get }
+  var products: [Swift.String : CYBAVOWallet.FinancialProduct] { get }
+  var history: [CYBAVOWallet.FinancialHistory] { get }
+}
+public protocol GetFinancialOrderResult {
+  var productUuid: Swift.String { get }
+  var uuid: Swift.String { get }
+  var kind: CYBAVOWallet.FinancialProductKind { get }
+  var userReward: Swift.String { get }
+  var userDeposit: Swift.String { get }
+  var userTotal: Swift.String { get }
+  var earlyReward: Swift.String { get }
+  var earlyDeposit: Swift.String { get }
+  var earlyTotal: Swift.String { get }
+}
+public protocol GetFinancialBonusResult {
+  var bonusList: [CYBAVOWallet.FinancialBonus] { get }
+}
+public protocol FinancialBonus {
+  var publicCurrency: Swift.Int { get }
+  var publicTokenAddress: Swift.String { get }
+  var publicName: Swift.String { get }
+  var kind: CYBAVOWallet.FinancialBonusKind { get }
+  var isAlreadyWithdrawn: Swift.Bool { get }
+  var currency: Swift.Int { get }
+  var tokenAddress: Swift.String { get }
+  var uuid: Swift.String { get }
+  var rewards: [CYBAVOWallet.FinancialReward] { get }
+  var lastTimestamp: Swift.Int { get }
+}
+public protocol FinancialReward {
+  var amount: Swift.String { get }
+  var fromUserCode: Swift.String { get }
+}
+public protocol RequestSecureTokenResult {
+  var expireTime: Swift.Int64 { get }
+  var unlockToken: Swift.String { get }
+}
+public protocol ClearSecureTokenResult {
+}
+public class Auth {
+  public static let shared: CYBAVOWallet.Auth
+  public init()
+  public func signIn(token: Swift.String, identityProvider: Swift.String, extras: [Swift.String : Swift.String] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignInResult>)
+  public func signUp(token: Swift.String, identityProvider: Swift.String, extras: [Swift.String : Swift.String] = [:], completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SignUpResult>)
+  public func registerPhoneNumber(contryCode: Swift.String, phone: Swift.String, duration: Swift.Int64, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RegisterPhoneNumberResult>)
+  public func verifyOtp(actionToken: Swift.String, code: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.VerifyOtpResult>)
+  public func registerReferralCode(code: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RegisterReferralCodeResult>)
+  public func setPushDeviceToken(deviceToken: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetPushDeviceTokenResult>)
+  public func signOut()
+  public func getSignInState() -> CYBAVOWallet.SignInState
+  public func addSignInStateDelegate(_ delegate: CYBAVOWallet.SignInStateDelegate)
+  public func removeSignInStateDelegate(_ delegate: CYBAVOWallet.SignInStateDelegate)
+  public func getUserState(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetUserStateResult>)
+  public func setupPinCode(pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetupPinCodeResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func setupPinCode(pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetupPinCodeResult>)
+  @available(*, deprecated, message: "Please use validatePinCode(PinSecret) for better safety protection.")
+  public func validatePinCode(currentPinCode pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ValidatePinCodeResult>)
+  public func validatePinCode(currentPinSecret pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ValidatePinCodeResult>)
+  public func setupBackupChallenge(pinSecret: CYBAVOWallet.PinSecret, challenge1: CYBAVOWallet.BackupChallenge, challenge2: CYBAVOWallet.BackupChallenge, challenge3: CYBAVOWallet.BackupChallenge, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetupPinCodeResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func setupBackupChallenge(pinCode: Swift.String, challenge1: CYBAVOWallet.BackupChallenge, challenge2: CYBAVOWallet.BackupChallenge, challenge3: CYBAVOWallet.BackupChallenge, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SetupPinCodeResult>)
+  public func restorePinCode(pinSecret: CYBAVOWallet.PinSecret, challenge1: CYBAVOWallet.BackupChallenge, challenge2: CYBAVOWallet.BackupChallenge, challenge3: CYBAVOWallet.BackupChallenge, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ChangePinCodeResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func restorePinCode(pinCode: Swift.String, challenge1: CYBAVOWallet.BackupChallenge, challenge2: CYBAVOWallet.BackupChallenge, challenge3: CYBAVOWallet.BackupChallenge, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ChangePinCodeResult>)
+  public func changePinCode(newPinSecret: CYBAVOWallet.PinSecret, currentPinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ChangePinCodeResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func changePinCode(newPinCode: Swift.String, currentPinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ChangePinCodeResult>)
+  public func getRestoreQuestions(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetRestoreQuestionsResult>)
+  public func verifyRestoreQuestions(challenge1: CYBAVOWallet.BackupChallenge, challenge2: CYBAVOWallet.BackupChallenge, challenge3: CYBAVOWallet.BackupChallenge, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.VerifyRestoreQuestionsResult>)
+  public func forgotPinCode(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.ForgotPinCodeResult>)
+  public func verifyRecoveryCode(recoveryCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.VerifyRecoveryCodeResult>)
+  public func recoverPinCode(pinSecret: CYBAVOWallet.PinSecret, recoveryCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RecoveryPinCodeResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func recoverPinCode(pinCode: Swift.String, recoveryCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RecoveryPinCodeResult>)
+  public func recoverPinCodeInternal(pinCode: Swift.String, recoveryCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RecoveryPinCodeResult>)
+  public func createKyc(country: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CreateKycResult>)
+  public func getKycAccessToken(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetKycAccessTokenResult>)
+  public func getKycShareToken(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetKycShareTokenResult>)
+  public func checkKycSetting(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.CheckKycSettingResult>)
+  public func getApplicantStatus(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.GetApplicantStatusResult>)
+  public func searchUser(keyword: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.SearchUserResult>)
+  public func updateRealName(realName: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.UpdateRealNameResult>)
+  public func revokeUser(completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RevokeUserResult>)
+  public func revokeUser(pinSecret: CYBAVOWallet.PinSecret, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RevokeUserResult>)
+  @available(*, deprecated, message: "Pass PIN code in plaintext will be deprecated soon. Please use PinCodeInputView instead")
+  public func revokeUser(pinCode: Swift.String, completion: @escaping CYBAVOWallet.Callback<CYBAVOWallet.RevokeUserResult>)
+  @objc deinit
+}
+public struct ABIObject : Swift.Codable {
+  public enum StateMutability : Swift.String, Swift.Codable {
+    case pure
+    case view
+    case nonpayable
+    case payable
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum ObjectType : Swift.String, Swift.Codable {
+    case event
+    case function
+    case constructor
+    case fallback
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public struct Parameter : Swift.Codable {
+    public func encode(to encoder: Swift.Encoder) throws
+    public init(from decoder: Swift.Decoder) throws
+  }
+  public init(decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+extension CYBAVOWallet.WalletType : Swift.Equatable {}
+extension CYBAVOWallet.WalletType : Swift.Hashable {}
+extension CYBAVOWallet.WalletType : Swift.RawRepresentable {}
+extension CYBAVOWallet.OtpType : Swift.Equatable {}
+extension CYBAVOWallet.OtpType : Swift.Hashable {}
+extension CYBAVOWallet.OtpType : Swift.RawRepresentable {}
+extension CYBAVOWallet.EosResourceTransactionType : Swift.Equatable {}
+extension CYBAVOWallet.EosResourceTransactionType : Swift.Hashable {}
+extension CYBAVOWallet.EosResourceTransactionType : Swift.RawRepresentable {}
+extension CYBAVOWallet.Direction : Swift.Equatable {}
+extension CYBAVOWallet.Direction : Swift.Hashable {}
+extension CYBAVOWallet.Direction : Swift.RawRepresentable {}
+extension CYBAVOWallet.TransactionExplainKind : Swift.Equatable {}
+extension CYBAVOWallet.TransactionExplainKind : Swift.Hashable {}
+extension CYBAVOWallet.TransactionExplainKind : Swift.RawRepresentable {}
+extension CYBAVOWallet.TransactionType : Swift.Equatable {}
+extension CYBAVOWallet.TransactionType : Swift.Hashable {}
+extension CYBAVOWallet.TransactionType : Swift.RawRepresentable {}
+extension CYBAVOWallet.SignInState : Swift.Equatable {}
+extension CYBAVOWallet.SignInState : Swift.Hashable {}
+extension CYBAVOWallet.ApiError.ErrorCode : Swift.Equatable {}
+extension CYBAVOWallet.ApiError.ErrorCode : Swift.Hashable {}
+extension CYBAVOWallet.ApiError.ErrorCode : Swift.RawRepresentable {}
+extension CYBAVOWallet.BiometryType : Swift.Equatable {}
+extension CYBAVOWallet.BiometryType : Swift.Hashable {}
+extension CYBAVOWallet.BiometryType : Swift.RawRepresentable {}
+extension CYBAVOWallet.TokenStandard : Swift.Equatable {}
+extension CYBAVOWallet.TokenStandard : Swift.Hashable {}
+extension CYBAVOWallet.TokenStandard : Swift.RawRepresentable {}
+extension CYBAVOWallet.Status : Swift.Equatable {}
+extension CYBAVOWallet.Status : Swift.Hashable {}
+extension CYBAVOWallet.Status : Swift.RawRepresentable {}
+extension CYBAVOWallet.FinancialBonusKind : Swift.Equatable {}
+extension CYBAVOWallet.FinancialBonusKind : Swift.Hashable {}
+extension CYBAVOWallet.FinancialBonusKind : Swift.RawRepresentable {}
+extension CYBAVOWallet.FinancialHistoryListKind : Swift.Equatable {}
+extension CYBAVOWallet.FinancialHistoryListKind : Swift.Hashable {}
+extension CYBAVOWallet.FinancialHistoryListKind : Swift.RawRepresentable {}
+extension CYBAVOWallet.FinancialHistoryStatus : Swift.Equatable {}
+extension CYBAVOWallet.FinancialHistoryStatus : Swift.Hashable {}
+extension CYBAVOWallet.FinancialHistoryStatus : Swift.RawRepresentable {}
+extension CYBAVOWallet.FinancialProductListKind : Swift.Equatable {}
+extension CYBAVOWallet.FinancialProductListKind : Swift.Hashable {}
+extension CYBAVOWallet.FinancialProductListKind : Swift.RawRepresentable {}
+extension CYBAVOWallet.FinancialProductKind : Swift.Equatable {}
+extension CYBAVOWallet.FinancialProductKind : Swift.Hashable {}
+extension CYBAVOWallet.FinancialProductKind : Swift.RawRepresentable {}
+extension CYBAVOWallet.ABIObject.StateMutability : Swift.Equatable {}
+extension CYBAVOWallet.ABIObject.StateMutability : Swift.Hashable {}
+extension CYBAVOWallet.ABIObject.StateMutability : Swift.RawRepresentable {}
+extension CYBAVOWallet.ABIObject.ObjectType : Swift.Equatable {}
+extension CYBAVOWallet.ABIObject.ObjectType : Swift.Hashable {}
+extension CYBAVOWallet.ABIObject.ObjectType : Swift.RawRepresentable {}

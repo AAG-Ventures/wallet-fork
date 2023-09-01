@@ -1,0 +1,11 @@
+framework module CYBAVOWallet {
+  umbrella header "CYBAVOWallet.h"
+
+  export *
+  module * { export * }
+}
+
+module CYBAVOWallet.Swift {
+    header "CYBAVOWallet-Swift.h"
+    requires objc
+}
