@@ -8,18 +8,23 @@ Use CYBAVO Wallet App SDK to easily develop secure wallets for your users withou
 
   s.homepage     = "https://www.cybavo.com/wallet-app-sdk/"
   s.license      = { :type => "Apache License, Version 2.0", :file => "LICENSE" }
-  s.author             = { "CYBAVO" => "dev@cybavo.com" }
+  s.author       = { "CYBAVO" => "dev@cybavo.com" }
+  s.swift_version = '5.6.1'
   s.platform     = :ios, "11.0"
-  s.source       = { :git => "https://github.com/AAG-Ventures/wallet-fork.git" }
-  s.source_files  = "**/*.{h}"
-  s.exclude_files = "Classes/Exclude"
-  s.swift_version = '4.2.1'
-  s.ios.vendored_frameworks = 'CYBAVOWallet.framework'
-  s.resources = ['CYBAVOWallet.framework/WalletSDK.plist', 'CYBAVOWallet.framework/*.nib']
+  s.source       = { :git => "https://github.com/AAG-Ventures/wallet-fork.git", :tag => "1.2.505" }
+
+  # Published binary
+  s.ios.vendored_frameworks = 'CYBAVOWallet.xcframework'
+  s.resources = ['CYBAVOWallet.xcframework/**/WalletSDK.plist']
+
+  # Dependency
   s.dependency 'ObjectMapper', '~> 3.5.1'
   s.dependency 'AlamofireObjectMapper', '~> 5.2.1'
   s.dependency 'Alamofire', '~> 4.9.0'
-  s.dependency 'CryptoSwift', '1.0.0'
+  s.dependency 'CryptoSwift', '~> 1.3.8'
   s.dependency 'SwiftyUserDefaults', '4.0.0'
   s.dependency 'SwiftOTP', '2.0.0'
+  s.dependency 'Web3'
+  s.dependency 'Web3/ContractABI'
+
 end
